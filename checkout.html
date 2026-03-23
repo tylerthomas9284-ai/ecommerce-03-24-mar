@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Checkout - ElanWear</title>
+  <meta name="description" content="Complete your purchase securely.">
+  
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  
+  <!-- Custom Styles -->
+  <link rel="stylesheet" href="css/styles.css">
+  
+  <!-- Lucide Icons -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+<body>
+  <!-- Header Container -->
+  <div id="header-container"></div>
+
+  <!-- Main Content -->
+  <main class="min-h-screen bg-white" id="checkout-container">
+    <!-- Checkout will be rendered here -->
+  </main>
+
+  <!-- Footer Container -->
+  <div id="footer-container"></div>
+
+  <!-- Scripts -->
+  <script src="js/products.js"></script>
+  <script src="js/cart.js"></script>
+  <script src="js/common.js"></script>
+  
+  <script>
+    const formData = {
+      fullName: '',
+      email: '',
+      phone: '',
+      address: '',
+      city: '',
+      state: '',
+      zipCode: '',
+      paymentMethod: 'credit-card'
+    };
+
+    const errors = {};
+
+    document.addEventListener('DOMContentLoaded', function() {
+      renderCheckout();
+      lucide.createIcons();
+    });
+
+    function renderCheckout() {
+      const container = document.getElementById('checkout-container');
+      const cart = cartManager.getCart();
+
+      if (cart.length === 0) {
+        container.innerHTML = `
+          <div class="flex items-center justify-center" style="min-height: 60vh;">
+            <div class="text-center">
+              <h2 class="text-3xl mb-4 tracking-tight font-medium">Your cart is empty</h2>
+              <p class="text-neutral-600 mb-8">
+                Add some items to your cart before checking out.
+              </p>
+              <a href="shop.html" class="bg-black text-white px-8 py-4 hover:bg-neutral-800 transition-colors inline-block font-medium">
+                Continue Shopping
+              </a>
+            </div>
+          </div>
+        `;
+        return;
+      }
+
+      const total = cartManager.getCartTotal();
+      const tax = total * 0.08;
+      const finalTotal = total + tax;
+
+      container.innerHTML = `
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+          <h1 class="text-4xl mb-8 tracking-tight font-medium">Checkout</h1>
+
+          <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+            <!-- Checkout Form -->
+            <div class="lg:col-span-2">
+              <form id="checkout-form" class="space-y-8">
+                <!-- Contact Information -->
+                <div>
+                  <h2 class="text-2xl mb-4 tracking-tight font-medium">Contact Information</h2>
+                  <div class="space-y-4">
+                    <div>
+                      <label for="fullName" class="block text-sm mb-2 font-medium">Full Name *</label>
+                      <input 
+                        type="text" 
+                        id="fullName" 
+                        name="fullName" 
+                        class="w-full px-4 py-3 border border-neutral-300 focus:outline-none focus:border-black"
+                        value="${formData.fullName}"
+                        oninput="handleInputChange(event)"
+                      >
+                      <p class="error-message hidden" id="error-fullName"></p>
+                    </div>
+
+                    <div>
+                      <label for="email" class="block text-sm mb-2 font-medium">Email Address *</label>
+                      <input 
+                        type="email" 
+                        id="email" 
+                        name="email" 
+                        class="w-full px-4 py-3 border border-neutral-300 focus:outline-none focus:border-black"
+                        value="${formData.email}"
+                        oninput="handleInputChange(event)"
+                      >
+                      <p class="error-message hidden" id="error-email"></p>
+                    </div>
+
+                    <div>
+                      <label for="phone" class="block text-sm mb-2 font-medium">Phone Number *</label>
+                      <input 
+                        type="tel" 
+                        id="phone" 
+                        name="phone" 
+                        class="w-full px-4 py-3 border border-neutral-300 focus:outline-none focus:border-black"
+                        value="${formData.phone}"
+                        oninput="handleInputChange(event)"
+                      >
+                      <p class="error-message hidden" id="error-phone"></p>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Shipping Address -->
+                <div>
+                  <h2 class="text-2xl mb-4 tracking-tight font-medium">Shipping Address</h2>
+                  <div class="space-y-4">
+                    <div>
+                      <label for="address" class="block text-sm mb-2 font-medium">Street Address *</label>
+                      <input 
+                        type="text" 
+                        id="address" 
+                        name="address" 
+                        class="w-full px-4 py-3 border border-neutral-300 focus:outline-none focus:border-black"
+                        value="${formData.address}"
+                        oninput="handleInputChange(event)"
+                      >
+                      <p class="error-message hidden" id="error-address"></p>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                      <div>
+                        <label for="city" class="block text-sm mb-2 font-medium">City *</label>
+                        <input 
+                          type="text" 
+                          id="city" 
+                          name="city" 
+                          class="w-full px-4 py-3 border border-neutral-300 focus:outline-none focus:border-black"
+                          value="${formData.city}"
+                          oninput="handleInputChange(event)"
+                        >
+                        <p class="error-message hidden" id="error-city"></p>
+                      </div>
+
+                      <div>
+                        <label for="state" class="block text-sm mb-2 font-medium">State *</label>
+                        <input 
+                          type="text" 
+                          id="state" 
+                          name="state" 
+                          class="w-full px-4 py-3 border border-neutral-300 focus:outline-none focus:border-black"
+                          value="${formData.state}"
+                          oninput="handleInputChange(event)"
+                        >
+                        <p class="error-message hidden" id="error-state"></p>
+                      </div>
+
+                      <div>
+                        <label for="zipCode" class="block text-sm mb-2 font-medium">Zip Code *</label>
+                        <input 
+                          type="text" 
+                          id="zipCode" 
+                          name="zipCode" 
+                          class="w-full px-4 py-3 border border-neutral-300 focus:outline-none focus:border-black"
+                          value="${formData.zipCode}"
+                          oninput="handleInputChange(event)"
+                        >
+                        <p class="error-message hidden" id="error-zipCode"></p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Payment Method -->
+                <div>
+                  <h2 class="text-2xl mb-4 tracking-tight font-medium">Payment Method</h2>
+                  <div class="space-y-3">
+                    <label class="flex items-center p-4 border border-neutral-300 cursor-pointer hover:border-black transition-colors">
+                      <input type="radio" name="paymentMethod" value="credit-card" checked onchange="handleInputChange(event)" class="mr-3">
+                      <span>Credit Card</span>
+                    </label>
+                    <label class="flex items-center p-4 border border-neutral-300 cursor-pointer hover:border-black transition-colors">
+                      <input type="radio" name="paymentMethod" value="paypal" onchange="handleInputChange(event)" class="mr-3">
+                      <span>PayPal</span>
+                    </label>
+                    <label class="flex items-center p-4 border border-neutral-300 cursor-pointer hover:border-black transition-colors">
+                      <input type="radio" name="paymentMethod" value="cod" onchange="handleInputChange(event)" class="mr-3">
+                      <span>Cash on Delivery</span>
+                    </label>
+                  </div>
+                </div>
+
+                <button type="submit" class="w-full bg-black text-white px-8 py-4 hover:bg-neutral-800 transition-colors font-medium">
+                  Place Order
+                </button>
+              </form>
+            </div>
+
+            <!-- Order Summary -->
+            <div class="lg:col-span-1">
+              <div class="bg-neutral-50 p-6 sticky top-24">
+                <h2 class="text-2xl mb-6 tracking-tight font-medium">Order Summary</h2>
+
+                <div class="space-y-4 mb-6 pb-6 border-b border-neutral-200">
+                  ${cart.map(item => `
+                    <div class="flex gap-3">
+                      <div class="w-16 h-16 bg-neutral-200 flex-shrink-0 overflow-hidden">
+                        <img src="${item.image}" alt="${item.name}" class="w-full h-full object-cover">
+                      </div>
+                      <div class="flex-1">
+                        <p class="text-sm mb-1">${item.name}</p>
+                        <p class="text-xs text-neutral-500">
+                          Qty: ${item.quantity} ${item.selectedSize ? `• Size: ${item.selectedSize}` : ''}
+                        </p>
+                        <p class="text-sm mt-1 font-medium">$${(item.price * item.quantity).toFixed(2)}</p>
+                      </div>
+                    </div>
+                  `).join('')}
+                </div>
+
+                <div class="space-y-3 mb-6 pb-6 border-b border-neutral-200">
+                  <div class="flex justify-between text-neutral-600">
+                    <span>Subtotal</span>
+                    <span>$${total.toFixed(2)}</span>
+                  </div>
+                  <div class="flex justify-between text-neutral-600">
+                    <span>Shipping</span>
+                    <span>Free</span>
+                  </div>
+                  <div class="flex justify-between text-neutral-600">
+                    <span>Tax</span>
+                    <span>$${tax.toFixed(2)}</span>
+                  </div>
+                </div>
+
+                <div class="flex justify-between text-xl font-medium">
+                  <span>Total</span>
+                  <span>$${finalTotal.toFixed(2)}</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      `;
+
+      // Add form submit handler
+      document.getElementById('checkout-form').addEventListener('submit', handleSubmit);
+    }
+
+    function handleInputChange(event) {
+      const { name, value } = event.target;
+      formData[name] = value;
+
+      // Clear error for this field
+      const errorEl = document.getElementById(`error-${name}`);
+      if (errorEl) {
+        errorEl.classList.add('hidden');
+        errorEl.textContent = '';
+      }
+      
+      const inputEl = document.getElementById(name);
+      if (inputEl) {
+        inputEl.classList.remove('input-error');
+      }
+    }
+
+    function validateForm() {
+      const newErrors = {};
+
+      if (!formData.fullName.trim()) {
+        newErrors.fullName = 'Full name is required';
+      }
+
+      if (!formData.email.trim()) {
+        newErrors.email = 'Email is required';
+      } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
+        newErrors.email = 'Please enter a valid email';
+      }
+
+      if (!formData.phone.trim()) {
+        newErrors.phone = 'Phone number is required';
+      } else if (!/^[\d\s\-\(\)\+]+$/.test(formData.phone)) {
+        newErrors.phone = 'Please enter a valid phone number';
+      }
+
+      if (!formData.address.trim()) {
+        newErrors.address = 'Address is required';
+      }
+
+      if (!formData.city.trim()) {
+        newErrors.city = 'City is required';
+      }
+
+      if (!formData.state.trim()) {
+        newErrors.state = 'State is required';
+      }
+
+      if (!formData.zipCode.trim()) {
+        newErrors.zipCode = 'Zip code is required';
+      } else if (!/^\d{5}(-\d{4})?$/.test(formData.zipCode)) {
+        newErrors.zipCode = 'Please enter a valid zip code';
+      }
+
+      return newErrors;
+    }
+
+    function handleSubmit(event) {
+      event.preventDefault();
+
+      const newErrors = validateForm();
+
+      // Clear previous errors
+      document.querySelectorAll('.error-message').forEach(el => {
+        el.classList.add('hidden');
+        el.textContent = '';
+      });
+      document.querySelectorAll('input').forEach(el => {
+        el.classList.remove('input-error');
+      });
+
+      if (Object.keys(newErrors).length > 0) {
+        // Show errors
+        Object.keys(newErrors).forEach(field => {
+          const errorEl = document.getElementById(`error-${field}`);
+          const inputEl = document.getElementById(field);
+          
+          if (errorEl) {
+            errorEl.classList.remove('hidden');
+            errorEl.textContent = newErrors[field];
+          }
+          if (inputEl) {
+            inputEl.classList.add('input-error');
+          }
+        });
+
+        Toast.error('Please fill in all required fields correctly');
+        return;
+      }
+
+      // Success - clear cart and redirect
+      Toast.success('Order placed successfully!');
+      cartManager.clearCart();
+      
+      setTimeout(() => {
+        window.location.href = 'index.html';
+      }, 2000);
+    }
+  </script>
+</body>
+</html>

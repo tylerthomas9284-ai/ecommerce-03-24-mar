@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Contact Us - ElanWear</title>
+  <meta name="description" content="Get in touch with ElanWear. We'd love to hear from you.">
+  
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  
+  <!-- Custom Styles -->
+  <link rel="stylesheet" href="css/styles.css">
+  
+  <!-- Lucide Icons -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+<body>
+  <!-- Header Container -->
+  <div id="header-container"></div>
+
+  <!-- Main Content -->
+  <main class="min-h-screen bg-white">
+    <!-- Hero Section -->
+    <section class="bg-neutral-900 text-white py-20">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+        <h1 class="text-5xl md:text-6xl mb-4 tracking-tight font-medium">Get in Touch</h1>
+        <p class="text-xl text-neutral-300">
+          We'd love to hear from you. Send us a message!
+        </p>
+      </div>
+    </section>
+
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-12">
+        <!-- Contact Information -->
+        <div>
+          <h2 class="text-3xl mb-8 tracking-tight font-medium">Contact Information</h2>
+
+          <div class="space-y-6 mb-12">
+            <div class="flex items-start gap-4">
+              <div class="w-12 h-12 bg-black text-white rounded-full flex items-center justify-center flex-shrink-0">
+                <i data-lucide="map-pin" class="w-6 h-6"></i>
+              </div>
+              <div>
+                <h3 class="mb-2 font-medium">Address</h3>
+                <p class="text-neutral-600">
+                  90 Waverly Pl, New York, NY 10003, USA
+                </p>
+              </div>
+            </div>
+
+            <div class="flex items-start gap-4">
+              <div class="w-12 h-12 bg-black text-white rounded-full flex items-center justify-center flex-shrink-0">
+                <i data-lucide="phone" class="w-6 h-6"></i>
+              </div>
+              <div>
+                <h3 class="mb-2 font-medium">Phone</h3>
+                <p class="text-neutral-600">+1-564-483-2938</p>
+              </div>
+            </div>
+
+            <div class="flex items-start gap-4">
+              <div class="w-12 h-12 bg-black text-white rounded-full flex items-center justify-center flex-shrink-0">
+                <i data-lucide="mail" class="w-6 h-6"></i>
+              </div>
+              <div>
+                <h3 class="mb-2 font-medium">Email</h3>
+                <p class="text-neutral-600">fashion@ElanWear.in</p>
+              </div>
+            </div>
+
+            <div class="flex items-start gap-4">
+              <div class="w-12 h-12 bg-black text-white rounded-full flex items-center justify-center flex-shrink-0">
+                <i data-lucide="clock" class="w-6 h-6"></i>
+              </div>
+              <div>
+                <h3 class="mb-2 font-medium">Business Hours</h3>
+                <p class="text-neutral-600">
+                  Monday - Friday: 9:00 AM - 6:00 PM EST<br>
+                  Saturday: 10:00 AM - 4:00 PM EST<br>
+                  Sunday: Closed
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Google Map Embed -->
+          <div class="w-full h-64 bg-neutral-100 rounded overflow-hidden">
+            <iframe
+              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3023.5986854285827!2d-73.99968492346168!3d40.73124963577596!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x89c2599787834ad9%3A0x4b652e2c14e02e3b!2s90%20Waverly%20Pl%2C%20New%20York%2C%20NY%2010003%2C%20USA!5e0!3m2!1sen!2s!4v1707489234567!5m2!1sen!2s"
+              width="100%"
+              height="100%"
+              style="border: 0;"
+              allowfullscreen=""
+              loading="lazy"
+              referrerpolicy="no-referrer-when-downgrade"
+            ></iframe>
+          </div>
+        </div>
+
+        <!-- Contact Form -->
+        <div>
+          <h2 class="text-3xl mb-8 tracking-tight font-medium">Send Us a Message</h2>
+
+          <form id="contact-form" class="space-y-6">
+            <div>
+              <label for="name" class="block text-sm mb-2 font-medium">
+                Your Name *
+              </label>
+              <input
+                type="text"
+                id="name"
+                name="name"
+                class="w-full px-4 py-3 border border-neutral-300 focus:outline-none focus:border-black"
+              />
+              <p class="error-message hidden" id="error-name"></p>
+            </div>
+
+            <div>
+              <label for="email" class="block text-sm mb-2 font-medium">
+                Email Address *
+              </label>
+              <input
+                type="email"
+                id="email"
+                name="email"
+                class="w-full px-4 py-3 border border-neutral-300 focus:outline-none focus:border-black"
+              />
+              <p class="error-message hidden" id="error-email"></p>
+            </div>
+
+            <div>
+              <label for="message" class="block text-sm mb-2 font-medium">
+                Message *
+              </label>
+              <textarea
+                id="message"
+                name="message"
+                rows="6"
+                class="w-full px-4 py-3 border border-neutral-300 focus:outline-none focus:border-black resize-none"
+              ></textarea>
+              <p class="error-message hidden" id="error-message"></p>
+            </div>
+
+            <button
+              type="submit"
+              class="w-full bg-black text-white px-8 py-4 hover:bg-neutral-800 transition-colors font-medium"
+            >
+              Send Message
+            </button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- Footer Container -->
+  <div id="footer-container"></div>
+
+  <!-- Scripts -->
+  <script src="js/products.js"></script>
+  <script src="js/cart.js"></script>
+  <script src="js/common.js"></script>
+  
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      lucide.createIcons();
+
+      const form = document.getElementById('contact-form');
+      form.addEventListener('submit', handleSubmit);
+    });
+
+    function handleSubmit(e) {
+      e.preventDefault();
+
+      // Clear previous errors
+      document.querySelectorAll('.error-message').forEach(el => {
+        el.classList.add('hidden');
+        el.textContent = '';
+      });
+      document.querySelectorAll('input, textarea').forEach(el => {
+        el.classList.remove('input-error');
+      });
+
+      // Get form values
+      const name = document.getElementById('name').value.trim();
+      const email = document.getElementById('email').value.trim();
+      const message = document.getElementById('message').value.trim();
+
+      const errors = {};
+
+      // Validate
+      if (!name) {
+        errors.name = 'Name is required';
+      }
+
+      if (!email) {
+        errors.email = 'Email is required';
+      } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+        errors.email = 'Please enter a valid email';
+      }
+
+      if (!message) {
+        errors.message = 'Message is required';
+      }
+
+      // Show errors
+      if (Object.keys(errors).length > 0) {
+        Object.keys(errors).forEach(field => {
+          const errorEl = document.getElementById(`error-${field}`);
+          const inputEl = document.getElementById(field);
+          
+          if (errorEl) {
+            errorEl.classList.remove('hidden');
+            errorEl.textContent = errors[field];
+          }
+          if (inputEl) {
+            inputEl.classList.add('input-error');
+          }
+        });
+        return;
+      }
+
+      // Success
+      Toast.success('Thank you! Your message has been sent successfully.');
+      document.getElementById('contact-form').reset();
+    }
+  </script>
+</body>
+</html>
